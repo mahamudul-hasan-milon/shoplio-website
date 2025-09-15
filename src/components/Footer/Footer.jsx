@@ -1,4 +1,3 @@
-import React from "react";
 import footerLogo from "../../assets/logo.png";
 import Banner from "../../assets/website/footer-pattern.jpg";
 import {
@@ -46,11 +45,11 @@ const Footer = () => {
           <div className="py-8 px-4">
             <h1 className="sm:text-3xl text-xl font-bold sm:text-left text-justify mb-3 flex items-center gap-3">
               <img src={footerLogo} alt="" className="max-w-[50px]" />
-              Shopsy
+              Shoplio
             </h1>
             <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum in
-              beatae ea recusandae blanditiis veritatis.
+              Shoplio brings you trusted products, affordable prices and smooth
+              shopping—anytime, anywhere with confidence.
             </p>
           </div>
 
@@ -95,24 +94,24 @@ const Footer = () => {
 
             <div>
               <div className="flex items-center gap-3 mt-6">
-                <a href="#">
+                <a href="https://www.instagram.com/mahamudulhasan_milon/">
                   <FaInstagram className="text-3xl" />
                 </a>
-                <a href="#">
+                <a href="https://www.facebook.com/m.h.milon.212672">
                   <FaFacebook className="text-3xl" />
                 </a>
-                <a href="#">
+                <a href="https://www.linkedin.com/in/md-mahamudul-hasan-milon-91aa81230/">
                   <FaLinkedin className="text-3xl" />
                 </a>
               </div>
               <div className="mt-6">
                 <div className="flex items-center gap-3">
                   <FaLocationArrow />
-                  <p>Noida, Uttar Pradesh</p>
+                  <p>Mirpur, Bangladesh</p>
                 </div>
                 <div className="flex items-center gap-3 mt-3">
                   <FaMobileAlt />
-                  <p>+91 123456789</p>
+                  <p>+8801773593797</p>
                 </div>
               </div>
             </div>
