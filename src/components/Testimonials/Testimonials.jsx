@@ -1,4 +1,3 @@
-import React from "react";
 import Slider from "react-slick";
 
 const TestimonialData = [
@@ -76,7 +75,7 @@ const Testimonials = () => {
             What our customers are saying
           </p>
           <h1 data-aos="fade-up" className="text-3xl font-bold">
-            Testimonials
+            Reviews
           </h1>
           <p data-aos="fade-up" className="text-xs text-gray-400">
             Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sit
