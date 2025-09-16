@@ -1,4 +1,3 @@
-import React from "react";
 import Img1 from "../../assets/women/women.png";
 import Img2 from "../../assets/women/women2.jpg";
 import Img3 from "../../assets/women/women3.jpg";
@@ -61,8 +60,8 @@ const Products = () => {
             Products
           </h1>
           <p data-aos="fade-up" className="text-xs text-gray-400">
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sit
-            asperiores modi Sit asperiores modi
+            High-quality, stylish and durable products designed to make your
+            everyday life easier and enjoyable.
           </p>
         </div>
         {/* Body section */}
@@ -88,15 +87,17 @@ const Products = () => {
                     <FaStar className="text-yellow-400" />
                     <span>{data.rating}</span>
                   </div>
+                  <div className="flex justify-between mt-4 text-white dark:text-orange-600 font-semibold">
+                    <button className="p-2 border border-red-900 rounded-xl px-3.5 bg-purple-500 dark:bg-yellow-400">
+                      Buy
+                    </button>
+                    <button className="p-2 border border-red-900 rounded-xl px-3.5 bg-purple-500 dark:bg-yellow-400">
+                      Cart
+                    </button>
+                  </div>
                 </div>
               </div>
             ))}
-          </div>
-          {/* view all button */}
-          <div className="flex justify-center">
-            <button className="text-center mt-10 cursor-pointer bg-primary text-white py-1 px-5 rounded-md">
-              View All Button
-            </button>
           </div>
         </div>
       </div>
