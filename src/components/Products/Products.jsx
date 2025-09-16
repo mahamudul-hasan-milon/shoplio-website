@@ -40,7 +40,7 @@ const ProductsData = [
   {
     id: 5,
     img: Img2,
-    title: "Fashin T-Shirt",
+    title: "Fashion T-Shirt",
     rating: 4.5,
     color: "Pink",
     aosDelay: "800",

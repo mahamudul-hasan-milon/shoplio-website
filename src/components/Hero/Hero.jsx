@@ -1,4 +1,3 @@
-import React from "react";
 import Image1 from "../../assets/hero/women.png";
 import Image2 from "../../assets/hero/shopping.png";
 import Image3 from "../../assets/hero/sale.png";
@@ -10,21 +9,21 @@ const ImageList = [
     img: Image1,
     title: "Upto 50% off on all Men's Wear",
     description:
-      "lorem His Life will forever be Changed dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      "Shoplio Winter Sale! Enjoy up to 50% off on all men’s wear. Upgrade your wardrobe with stylish, high-quality clothing at unbeatable prices. Don’t miss these exclusive winter discounts today!",
   },
   {
     id: 2,
     img: Image2,
     title: "30% off on all Women's Wear",
     description:
-      "Who's there lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      "Shoplio Winter Sale! Get 30% off on all women’s wear. Discover trendy, comfortable, and premium outfits to refresh your style this winter. Limited-time offer, shop now before it ends!",
   },
   {
     id: 3,
     img: Image3,
     title: "70% off on all Products Sale",
     description:
-      "consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      "Massive Shoplio Winter Sale! Grab up to 70% off on all products. From clothing to accessories, enjoy incredible savings and shop your favorite items while stocks last. Don’t miss out!",
   },
 ];
 

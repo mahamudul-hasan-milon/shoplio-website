@@ -1,4 +1,3 @@
-import React from "react";
 import Img1 from "../../assets/shirt/shirt.png";
 import Img2 from "../../assets/shirt/shirt2.png";
 import Img3 from "../../assets/shirt/shirt3.png";
@@ -10,21 +9,21 @@ const ProductsData = [
     img: Img1,
     title: "Casual Wear",
     description:
-      "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      "Comfortable and stylish casual wear for everyday occasions—perfect blend of style and ease.",
   },
   {
     id: 2,
     img: Img2,
     title: "Printed shirt",
     description:
-      "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      "Trendy printed shirts with unique designs that make you stand out effortlessly.",
   },
   {
     id: 3,
     img: Img3,
     title: "Women shirt",
     description:
-      "lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      "Elegant and fashionable women’s shirts crafted for style, comfort and versatility.",
   },
 ];
 const TopProducts = ({ handleOrderPopup }) => {
@@ -40,8 +39,8 @@ const TopProducts = ({ handleOrderPopup }) => {
             Best Products
           </h1>
           <p data-aos="fade-up" className="text-xs text-gray-400">
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sit
-            asperiores modi Sit asperiores modi
+            Discover our best products—high-quality, trending and
+            customer-approved items you’ll love every time!
           </p>
         </div>
         {/* Body section */}
