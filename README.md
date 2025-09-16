@@ -4,19 +4,7 @@ A modern, responsive e-commerce website built with React.js, and styled using **
 
 This project is intended as a learning and demonstration project for full-stack web development.
 
-## Table of Contents
-
-- [Features](#features)
-- [Technologies Used](#technologies-used)
-- [Installation](#installation)
-- [Running the Project](#running-the-project)
-- [Project Structure](#project-structure)
-- [Screenshots](#screenshots)
-- [Future Improvements](#future-improvements)
-- [Contributing](#contributing)
-- [License](#license)
-
----
+## View Live Server: https://shoplio-website.vercel.app/
 
 ## Features
 
@@ -60,21 +48,16 @@ npm install
 
 Create a `.env` file in the root directory:
 
-```env
+````env
 MONGO_URI=your_mongodb_connection_string
 JWT_SECRET=your_jwt_secret_key
 PORT=5000
-```
-
----
-
-## Running the Project
 
 ### Development Mode
 
 ```bash
 npm run dev
-```
+````
 
 - Opens the website on `http://localhost:5173`
 - Hot reload enabled for live changes
@@ -107,14 +90,6 @@ shoplio/
 └─ index.html
 ```
 
----
-
-## Screenshots
-
-![Home Page](screenshots/home.png)
-![Product Page](screenshots/product.png)
-![Cart Page](screenshots/cart.png)
-
 ## Future Improvements
 
 - Add payment integration (Stripe, PayPal)
@@ -122,19 +97,6 @@ shoplio/
 - Add user profile management
 - Enhance UI with animations and advanced filters
 - Deploy a fully functional live version
-
----
-
-## Contributing
-
-1. Fork the repository
-2. Create a new branch (`git checkout -b feature-name`)
-3. Make your changes
-4. Commit your changes (`git commit -m "Description"`)
-5. Push to the branch (`git push origin feature-name`)
-6. Open a pull request
-
----
 
 ## License
 
