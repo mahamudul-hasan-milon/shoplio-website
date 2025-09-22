@@ -88,10 +88,10 @@ const Products = () => {
                     <span>{data.rating}</span>
                   </div>
                   <div className="flex justify-between mt-4 text-white dark:text-orange-600 font-semibold">
-                    <button className="p-2 border border-red-900 rounded-xl px-3.5 bg-purple-500 dark:bg-yellow-400">
+                    <button className="pb-1 border border-red-900 rounded-xl px-3 bg-purple-500 dark:bg-yellow-400">
                       Buy
                     </button>
-                    <button className="p-2 border border-red-900 rounded-xl px-3.5 bg-purple-500 dark:bg-yellow-400">
+                    <button className="pb-1 border border-red-900 rounded-xl px-3 bg-purple-500 dark:bg-yellow-400">
                       Cart
                     </button>
                   </div>
