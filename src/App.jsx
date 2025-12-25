@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Navbar from "./components/Navbar/Navbar";
 import Hero from "./components/Hero/Hero";
 import Products from "./components/Products/Products";
@@ -27,17 +27,33 @@ const App = () => {
     AOS.refresh();
   }, []);
 
+  // In parent component
+  const [selectedProduct, setSelectedProduct] = useState(null);
+
+  // To open popup with specific product
+  const handleOrderClick = (productId) => {
+    setSelectedProduct(productId);
+    setShowOrderPopup(true);
+  };
+
+  const [showOrderPopup, setShowOrderPopup] = useState(false);
+
   return (
     <div className="bg-white dark:bg-gray-900 dark:text-white duration-200">
       <Navbar handleOrderPopup={handleOrderPopup} />
       <Hero handleOrderPopup={handleOrderPopup} />
-      <Products />
-      <TopProducts handleOrderPopup={handleOrderPopup} />
+      <Products handleOrderPopup={() => setShowOrderPopup(true)} />
+      <TopProducts handleOrderPopup={() => setShowOrderPopup(true)} />
       <Banner />
       <Subscribe />
       <Testimonials />
       <Footer />
-      <Popup orderPopup={orderPopup} setOrderPopup={setOrderPopup} />
+      {/* <Popup orderPopup={orderPopup} setOrderPopup={setOrderPopup} /> */}
+      <Popup
+        orderPopup={showOrderPopup}
+        setOrderPopup={setShowOrderPopup}
+        selectedProductId={selectedProduct}
+      />
     </div>
   );
 };

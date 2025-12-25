@@ -1,0 +1,39 @@
+/* Remove default slick slider styles that might cause overflow */
+.slick-slider {
+    box-sizing: border-box;
+}
+
+.slick-slide {
+    outline: none !important;
+}
+
+.slick-list {
+    margin: 0 -10px;
+}
+
+.slick-slide>div {
+    padding: 0 10px;
+}
+
+/* Fix for focus outlines */
+button:focus {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+}
+
+/* Custom animations */
+@keyframes bounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+.animate-bounce {
+    animation: bounce 2s ease-in-out infinite;
+}
