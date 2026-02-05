@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Banner from "../../assets/website/orange-pattern.jpg";
 import {
   FaEnvelope,
@@ -12,7 +12,7 @@ import {
 import { IoMdRocket } from "react-icons/io";
 import "../Subscribe/Subscribe.css";
 
-const BannerImg = {
+const bannerStyle = {
   backgroundImage: `url(${Banner})`,
   backgroundPosition: "center",
   backgroundRepeat: "no-repeat",
@@ -20,59 +20,81 @@ const BannerImg = {
   width: "100%",
 };
 
-const Subscribe = () => {
+export default function Subscribe() {
   const [email, setEmail] = useState("");
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [emailCount, setEmailCount] = useState(2543);
   const [showBenefits, setShowBenefits] = useState(false);
-  const [emailValidation, setEmailValidation] = useState({
-    isValid: false,
-    message: "",
-  });
 
-  // Animated counter effect
+  // Load saved email (optional)
   useEffect(() => {
-    if (isSubscribed) {
-      const interval = setInterval(() => {
-        setEmailCount((prev) => prev + 1);
-      }, 1000);
+    if (typeof window === "undefined") return;
 
-      return () => clearInterval(interval);
-    }
-  }, [isSubscribed]);
+    const saved = localStorage.getItem("subscribedEmail");
+    if (saved) setEmail(saved);
+  }, []);
 
-  // Validate email in real-time
-  useEffect(() => {
-    if (!email) {
-      setEmailValidation({ isValid: false, message: "" });
-      return;
-    }
+  // Email validation (derived state)
+  const emailValidation = useMemo(() => {
+    if (!email) return { isValid: false, message: "" };
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      setEmailValidation({
-        isValid: false,
-        message: "Please enter a valid email address",
-      });
-    } else {
-      setEmailValidation({ isValid: true, message: "Valid email address" });
+      return { isValid: false, message: "Please enter a valid email address" };
     }
+
+    return { isValid: true, message: "Valid email address" };
   }, [email]);
+
+  // Fake animated counter effect after subscribe
+  useEffect(() => {
+    if (!isSubscribed) return;
+
+    const interval = setInterval(() => {
+      setEmailCount((prev) => prev + 1);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [isSubscribed]);
+
+  const benefits = useMemo(
+    () => [
+      {
+        icon: <FaGift />,
+        title: "Exclusive Offers",
+        description: "15% off your first order",
+      },
+      {
+        icon: <FaBell />,
+        title: "Early Access",
+        description: "Be the first to know about new arrivals",
+      },
+      {
+        icon: <IoMdRocket />,
+        title: "Flash Sales",
+        description: "Limited-time deals notification",
+      },
+      {
+        icon: <FaShieldAlt />,
+        title: "No Spam",
+        description: "Only quality content, unsubscribe anytime",
+      },
+    ],
+    [],
+  );
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
-    // Validation
     if (!email) {
       setError("Email address is required");
       return;
     }
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
+    if (!emailValidation.isValid) {
       setError("Please enter a valid email address");
       return;
     }
@@ -80,21 +102,21 @@ const Subscribe = () => {
     setIsLoading(true);
 
     try {
-      // Simulate API call
+      // Fake API call
       await new Promise((resolve) => setTimeout(resolve, 1500));
 
-      // In real app, you would:
-      // await subscribeToNewsletter(email);
-
       setIsSubscribed(true);
-      localStorage.setItem("subscribedEmail", email);
 
-      // Reset after 5 seconds
+      if (typeof window !== "undefined") {
+        localStorage.setItem("subscribedEmail", email);
+      }
+
+      // Auto reset after 5 seconds
       setTimeout(() => {
         setIsSubscribed(false);
         setEmail("");
       }, 5000);
-    } catch (err) {
+    } catch {
       setError("Something went wrong. Please try again later.");
     } finally {
       setIsLoading(false);
@@ -104,102 +126,83 @@ const Subscribe = () => {
   const handleUnsubscribe = () => {
     setIsSubscribed(false);
     setEmail("");
-    localStorage.removeItem("subscribedEmail");
+
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("subscribedEmail");
+    }
   };
 
-  const benefits = [
-    {
-      icon: <FaGift />,
-      title: "Exclusive Offers",
-      description: "15% off your first order",
-    },
-    {
-      icon: <FaBell />,
-      title: "Early Access",
-      description: "Be the first to know about new arrivals",
-    },
-    {
-      icon: <IoMdRocket />,
-      title: "Flash Sales",
-      description: "Limited-time deals notification",
-    },
-    {
-      icon: <FaShieldAlt />,
-      title: "No Spam",
-      description: "Only quality content, unsubscribe anytime",
-    },
-  ];
+  const handleClearEmail = () => {
+    setEmail("");
+    setError("");
+  };
 
   return (
     <div className="relative overflow-hidden py-16 md:py-24">
-      {/* Background with gradient overlay */}
-      <div className="absolute inset-0 z-0" style={BannerImg}>
-        <div className="absolute inset-0 bg-gradient-to-r from-orange-600/90 via-orange-500/80 to-orange-600/90"></div>
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-transparent via-black/20 to-transparent"></div>
+      {/* Background */}
+      <div className="absolute inset-0 z-0" style={bannerStyle}>
+        <div className="absolute inset-0 bg-gradient-to-r from-orange-600/90 via-orange-500/80 to-orange-600/90" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-transparent via-black/20 to-transparent" />
       </div>
 
-      {/* Animated floating elements */}
+      {/* Floating blobs */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-20 -left-20 w-60 h-60 bg-white/10 rounded-full blur-3xl"></div>
-        <div className="absolute -bottom-20 -right-20 w-80 h-80 bg-orange-400/20 rounded-full blur-3xl"></div>
-        <div className="absolute top-1/3 left-1/4 w-32 h-32 bg-yellow-400/10 rounded-full blur-2xl animate-pulse-slow"></div>
+        <div className="absolute -top-20 -left-20 w-60 h-60 bg-white/10 rounded-full blur-3xl" />
+        <div className="absolute -bottom-20 -right-20 w-80 h-80 bg-orange-400/20 rounded-full blur-3xl" />
+        <div className="absolute top-1/3 left-1/4 w-32 h-32 bg-yellow-400/10 rounded-full blur-2xl animate-pulse-slow" />
       </div>
 
       <div className="container relative z-10 mx-auto px-4">
         <div className="max-w-4xl mx-auto">
-          {/* Success Message */}
+          {/* Success UI */}
           {isSubscribed ? (
             <div className="bg-white dark:bg-gray-900 rounded-3xl shadow-2xl p-8 md:p-12 text-center animate-fade-in">
-              <div className="mb-6">
-                <div className="w-24 h-24 bg-gradient-to-br from-green-500 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-6 animate-bounce">
-                  <FaCheckCircle className="text-5xl text-white" />
-                </div>
-                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-                  Welcome to the Shoplio Family! 🎉
-                </h2>
-                <p className="text-lg text-gray-600 dark:text-gray-400 mb-6">
-                  Thank you for subscribing! We have sent a confirmation email
-                  to
-                  <span className="font-semibold text-orange-600">
-                    {" "}
-                    {email}
+              <div className="w-24 h-24 bg-gradient-to-br from-green-500 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-6 animate-bounce">
+                <FaCheckCircle className="text-5xl text-white" />
+              </div>
+
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+                Welcome to the Shoplio Family! 🎉
+              </h2>
+
+              <p className="text-lg text-gray-600 dark:text-gray-400 mb-6">
+                Thank you for subscribing! We have sent a confirmation email to
+                <span className="font-semibold text-orange-600"> {email}</span>.
+              </p>
+
+              <div className="inline-flex items-center gap-2 bg-gradient-to-r from-green-100 to-emerald-100 dark:from-green-900/30 dark:to-emerald-900/30 px-4 py-2 rounded-full mb-6">
+                <FaGift className="text-green-600" />
+                <span className="text-green-800 dark:text-green-400 font-medium">
+                  Welcome Offer: 15% OFF your first order
+                </span>
+              </div>
+
+              <div className="space-y-3 mb-8">
+                <p className="text-gray-500 dark:text-gray-400">
+                  Coupon code:{" "}
+                  <span className="font-mono font-bold text-orange-600">
+                    WELCOME15
                   </span>
-                  . Check your inbox for your exclusive welcome offer!
                 </p>
 
-                <div className="inline-flex items-center gap-2 bg-gradient-to-r from-green-100 to-emerald-100 dark:from-green-900/30 dark:to-emerald-900/30 px-4 py-2 rounded-full mb-6">
-                  <FaGift className="text-green-600" />
-                  <span className="text-green-800 dark:text-green-400 font-medium">
-                    Welcome Offer: 15% OFF your first order
-                  </span>
-                </div>
-
-                <div className="space-y-4 mb-8">
-                  <p className="text-gray-500 dark:text-gray-400">
-                    Coupon code:{" "}
-                    <span className="font-mono font-bold text-orange-600">
-                      WELCOME15
-                    </span>
-                  </p>
-                  <p className="text-sm text-gray-500 dark:text-gray-400 animate-pulse">
-                    This window will close automatically in 5 seconds...
-                  </p>
-                </div>
-
-                <button
-                  onClick={handleUnsubscribe}
-                  className="px-6 py-3 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-xl font-medium hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors flex items-center gap-2 mx-auto"
-                >
-                  <FaTimes />
-                  Unsubscribe
-                </button>
+                <p className="text-sm text-gray-500 dark:text-gray-400 animate-pulse">
+                  This window will close automatically in 5 seconds...
+                </p>
               </div>
+
+              <button
+                onClick={handleUnsubscribe}
+                className="px-6 py-3 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-xl font-medium hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors flex items-center gap-2 mx-auto"
+              >
+                <FaTimes />
+                Unsubscribe
+              </button>
             </div>
           ) : (
-            /* Main Subscription Form */
+            // Main form UI
             <div className="bg-white dark:bg-gray-900 rounded-3xl shadow-2xl overflow-hidden">
               <div className="grid grid-cols-1 lg:grid-cols-2">
-                {/* Left Side - Benefits */}
+                {/* Left */}
                 <div className="bg-gradient-to-br from-orange-50 to-amber-50 dark:from-gray-800 dark:to-gray-800 p-8 md:p-12">
                   <div className="mb-8">
                     <div className="inline-flex items-center gap-2 bg-white/30 dark:bg-gray-700/30 px-4 py-2 rounded-full mb-4">
@@ -212,6 +215,7 @@ const Subscribe = () => {
                     <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
                       Never Miss a Deal!
                     </h2>
+
                     <p className="text-gray-600 dark:text-gray-400">
                       Subscribe to our newsletter and be the first to know about
                       exclusive offers, new arrivals, and fashion tips. Plus,
@@ -219,7 +223,6 @@ const Subscribe = () => {
                     </p>
                   </div>
 
-                  {/* Benefits List */}
                   <div className="space-y-4 mb-8">
                     {benefits.map((benefit, index) => (
                       <div
@@ -241,7 +244,6 @@ const Subscribe = () => {
                     ))}
                   </div>
 
-                  {/* Stats */}
                   <div className="border-t border-orange-200 dark:border-gray-700 pt-6">
                     <div className="grid grid-cols-2 gap-4">
                       <div className="text-center">
@@ -252,6 +254,7 @@ const Subscribe = () => {
                           Subscribers
                         </div>
                       </div>
+
                       <div className="text-center">
                         <div className="text-2xl font-bold text-orange-600 dark:text-orange-400">
                           24h
@@ -264,13 +267,14 @@ const Subscribe = () => {
                   </div>
                 </div>
 
-                {/* Right Side - Form */}
+                {/* Right */}
                 <div className="p-8 md:p-12">
                   <div className="mb-8">
                     <div className="flex items-center gap-3 mb-4">
                       <div className="w-14 h-14 bg-gradient-to-r from-orange-500 to-amber-500 rounded-2xl flex items-center justify-center">
                         <FaEnvelope className="text-2xl text-white" />
                       </div>
+
                       <div>
                         <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
                           Subscribe Now
@@ -281,21 +285,21 @@ const Subscribe = () => {
                       </div>
                     </div>
 
-                    <p className="text-gray-600 dark:text-gray-400 mb-6">
-                      Enter your email below to join our community of
-                      fashion-forward shoppers. We respect your privacy and will
-                      never spam you.
+                    <p className="text-gray-600 dark:text-gray-400">
+                      Enter your email below to join our community. We respect
+                      your privacy and will never spam you.
                     </p>
                   </div>
 
-                  {/* Subscription Form */}
                   <form onSubmit={handleSubmit} className="space-y-6">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                         Email Address
                       </label>
+
                       <div className="relative">
-                        <FaEnvelope className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                        <FaEnvelope className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+
                         <input
                           type="email"
                           value={email}
@@ -304,44 +308,29 @@ const Subscribe = () => {
                             setError("");
                           }}
                           placeholder="your.email@example.com"
-                          className={`w-full pl-12 pr-10 py-4 rounded-xl border ${
+                          className={`w-full pl-12 pr-10 py-4 rounded-xl border dark:bg-gray-800 focus:outline-none focus:ring-2 transition-all duration-300 ${
                             error
-                              ? "border-red-500"
+                              ? "border-red-500 focus:ring-red-500"
                               : emailValidation.isValid
-                              ? "border-green-500"
-                              : "border-gray-300 dark:border-gray-600"
-                          } dark:bg-gray-800 focus:outline-none focus:ring-2 ${
-                            error
-                              ? "focus:ring-red-500"
-                              : emailValidation.isValid
-                              ? "focus:ring-green-500"
-                              : "focus:ring-orange-500"
-                          } transition-all duration-300`}
-                          aria-describedby={
-                            error ? "email-error" : "email-help"
-                          }
+                                ? "border-green-500 focus:ring-green-500"
+                                : "border-gray-300 dark:border-gray-600 focus:ring-orange-500"
+                          }`}
                         />
 
                         {email && (
                           <button
                             type="button"
-                            onClick={() => {
-                              setEmail("");
-                              setError("");
-                            }}
-                            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                            onClick={handleClearEmail}
+                            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                            aria-label="Clear email"
                           >
                             <FaTimes />
                           </button>
                         )}
                       </div>
 
-                      {/* Validation/Error Messages */}
                       {error && (
-                        <p
-                          id="email-error"
-                          className="mt-2 text-sm text-red-600 flex items-center gap-2 animate-shake"
-                        >
+                        <p className="mt-2 text-sm text-red-600 flex items-center gap-2 animate-shake">
                           <FaTimes className="text-red-500" />
                           {error}
                         </p>
@@ -365,7 +354,7 @@ const Subscribe = () => {
                       )}
                     </div>
 
-                    {/* Privacy Policy */}
+                    {/* Privacy */}
                     <div className="flex items-start gap-3">
                       <input
                         type="checkbox"
@@ -377,9 +366,8 @@ const Subscribe = () => {
                         htmlFor="privacy"
                         className="text-sm text-gray-600 dark:text-gray-400"
                       >
-                        I agree to receive emails about exclusive offers, new
-                        arrivals, and fashion tips. I can unsubscribe at any
-                        time. Read our{" "}
+                        I agree to receive emails. I can unsubscribe anytime.
+                        Read our{" "}
                         <a
                           href="/privacy"
                           className="text-orange-600 hover:underline font-medium"
@@ -390,7 +378,7 @@ const Subscribe = () => {
                       </label>
                     </div>
 
-                    {/* Submit Button */}
+                    {/* Submit */}
                     <button
                       type="submit"
                       disabled={isLoading || !email}
@@ -404,22 +392,22 @@ const Subscribe = () => {
                       ) : (
                         <>
                           Subscribe Now
-                          <FaArrowRight className="transform transition-transform group-hover:translate-x-1" />
+                          <FaArrowRight />
                         </>
                       )}
                     </button>
 
-                    {/* Additional Info */}
                     <div className="text-center">
                       <p className="text-xs text-gray-500 dark:text-gray-400">
                         🔒 We use secure encryption. Your information is
                         protected.
                       </p>
+
                       <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
                         Already subscribed?{" "}
                         <button
                           type="button"
-                          onClick={() => setShowBenefits(!showBenefits)}
+                          onClick={() => setShowBenefits(true)}
                           className="text-orange-600 hover:underline font-medium"
                         >
                           View benefits
@@ -428,11 +416,9 @@ const Subscribe = () => {
                     </div>
                   </form>
 
-                  {/* Social Proof */}
                   <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
                     <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
-                      Trusted by fashion enthusiasts worldwide. Join our
-                      community today!
+                      Trusted by fashion enthusiasts worldwide.
                     </p>
                   </div>
                 </div>
@@ -449,6 +435,7 @@ const Subscribe = () => {
                   <button
                     onClick={() => setShowBenefits(false)}
                     className="text-2xl hover:text-red-500 transition-colors"
+                    aria-label="Close benefits"
                   >
                     <FaTimes />
                   </button>
@@ -480,7 +467,7 @@ const Subscribe = () => {
                     <div>
                       <h4 className="font-semibold">No Spam, Ever</h4>
                       <p className="text-sm text-gray-600">
-                        Unsubscribe anytime with one click
+                        Unsubscribe anytime
                       </p>
                     </div>
                   </div>
@@ -499,11 +486,4 @@ const Subscribe = () => {
       </div>
     </div>
   );
-};
-
-// Prop validation
-Subscribe.propTypes = {
-  // Add any props if needed in the future
-};
-
-export default Subscribe;
+}

@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import footerLogo from "../../assets/logo.png";
 import Banner from "../../assets/website/footer-pattern.jpg";
+
 import {
   FaFacebook,
   FaInstagram,
@@ -18,9 +19,10 @@ import {
   FaTruck,
   FaCreditCard,
 } from "react-icons/fa";
+
 import { IoIosSend } from "react-icons/io";
 
-const BannerImg = {
+const bannerStyle = {
   backgroundImage: `url(${Banner})`,
   backgroundPosition: "bottom",
   backgroundRepeat: "no-repeat",
@@ -28,49 +30,94 @@ const BannerImg = {
   width: "100%",
 };
 
-const FooterLinks = [
+const FOOTER_LINKS = [
   {
     title: "Shop",
     links: [
-      { name: "New Arrivals", link: "/new" },
-      { name: "Winter Collection", link: "/winter" },
-      { name: "Summer Collection", link: "/summer" },
-      { name: "Sale", link: "/sale" },
-      { name: "Best Sellers", link: "/bestsellers" },
+      { name: "New Arrivals", href: "/new" },
+      { name: "Winter Collection", href: "/winter" },
+      { name: "Summer Collection", href: "/summer" },
+      { name: "Sale", href: "/sale" },
+      { name: "Best Sellers", href: "/bestsellers" },
     ],
   },
   {
     title: "Company",
     links: [
-      { name: "About Us", link: "/about" },
-      { name: "Careers", link: "/careers" },
-      { name: "Blog", link: "/blog" },
-      { name: "Press", link: "/press" },
-      { name: "Sustainability", link: "/sustainability" },
+      { name: "About Us", href: "/about" },
+      { name: "Careers", href: "/careers" },
+      { name: "Blog", href: "/blog" },
+      { name: "Press", href: "/press" },
+      { name: "Sustainability", href: "/sustainability" },
     ],
   },
   {
     title: "Support",
     links: [
-      { name: "Contact Us", link: "/contact" },
-      { name: "FAQ", link: "/faq" },
-      { name: "Shipping & Delivery", link: "/shipping" },
-      { name: "Returns & Exchanges", link: "/returns" },
-      { name: "Size Guide", link: "/size-guide" },
+      { name: "Contact Us", href: "/contact" },
+      { name: "FAQ", href: "/faq" },
+      { name: "Shipping & Delivery", href: "/shipping" },
+      { name: "Returns & Exchanges", href: "/returns" },
+      { name: "Size Guide", href: "/size-guide" },
     ],
   },
   {
     title: "Legal",
     links: [
-      { name: "Privacy Policy", link: "/privacy" },
-      { name: "Terms of Service", link: "/terms" },
-      { name: "Cookie Policy", link: "/cookies" },
-      { name: "Accessibility", link: "/accessibility" },
+      { name: "Privacy Policy", href: "/privacy" },
+      { name: "Terms of Service", href: "/terms" },
+      { name: "Cookie Policy", href: "/cookies" },
+      { name: "Accessibility", href: "/accessibility" },
     ],
   },
 ];
 
-const paymentMethods = [
+const SOCIAL_LINKS = [
+  {
+    name: "Facebook",
+    href: "https://www.facebook.com/m.h.milon.212672",
+    Icon: FaFacebook,
+    hoverClass: "hover:text-blue-600",
+  },
+  {
+    name: "Instagram",
+    href: "https://www.instagram.com/mahamudulhasan_milon/",
+    Icon: FaInstagram,
+    hoverClass: "hover:text-pink-600",
+  },
+  {
+    name: "LinkedIn",
+    href: "https://www.linkedin.com/in/md-mahamudul-hasan-milon-91aa81230/",
+    Icon: FaLinkedin,
+    hoverClass: "hover:text-blue-700",
+  },
+  {
+    name: "Twitter",
+    href: "#",
+    Icon: FaTwitter,
+    hoverClass: "hover:text-blue-400",
+  },
+  {
+    name: "YouTube",
+    href: "#",
+    Icon: FaYoutube,
+    hoverClass: "hover:text-red-600",
+  },
+  {
+    name: "TikTok",
+    href: "#",
+    Icon: FaTiktok,
+    hoverClass: "hover:text-white",
+  },
+  {
+    name: "Pinterest",
+    href: "#",
+    Icon: FaPinterest,
+    hoverClass: "hover:text-red-700",
+  },
+];
+
+const PAYMENT_METHODS = [
   { name: "Visa", icon: "💳" },
   { name: "MasterCard", icon: "💳" },
   { name: "PayPal", icon: "💰" },
@@ -78,77 +125,78 @@ const paymentMethods = [
   { name: "Google Pay", icon: "G" },
 ];
 
-const Footer = () => {
+export default function Footer() {
   const [email, setEmail] = useState("");
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [showBackToTop, setShowBackToTop] = useState(false);
 
-  // Check scroll position for back-to-top button
-  if (typeof window !== "undefined") {
-    window.addEventListener("scroll", () => {
-      setShowBackToTop(window.scrollY > 500);
-    });
-  }
+  const timeoutRef = useRef(null);
 
-  const handleSubscribe = (e) => {
-    e.preventDefault();
-    if (email) {
-      console.log("Subscribed:", email);
+  // Back to top visibility (performance safe)
+  useEffect(() => {
+    const onScroll = () => setShowBackToTop(window.scrollY > 500);
+
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Cleanup subscription timeout (important!)
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, []);
+
+  const scrollToTop = useCallback(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
+  const handleSubscribe = useCallback(
+    (e) => {
+      e.preventDefault();
+
+      const value = email.trim();
+      if (!value) return;
+
+      console.log("Subscribed:", value);
+
       setIsSubscribed(true);
       setEmail("");
-      // Reset subscription message after 3 seconds
-      setTimeout(() => setIsSubscribed(false), 3000);
-    }
-  };
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
 
-  const socialLinks = [
-    {
-      icon: <FaFacebook />,
-      link: "https://www.facebook.com/m.h.milon.212672",
-      color: "hover:text-blue-600",
+      timeoutRef.current = setTimeout(() => {
+        setIsSubscribed(false);
+      }, 3000);
     },
-    {
-      icon: <FaInstagram />,
-      link: "https://www.instagram.com/mahamudulhasan_milon/",
-      color: "hover:text-pink-600",
-    },
-    {
-      icon: <FaLinkedin />,
-      link: "https://www.linkedin.com/in/md-mahamudul-hasan-milon-91aa81230/",
-      color: "hover:text-blue-700",
-    },
-    { icon: <FaTwitter />, link: "#", color: "hover:text-blue-400" },
-    { icon: <FaYoutube />, link: "#", color: "hover:text-red-600" },
-    { icon: <FaTiktok />, link: "#", color: "hover:text-black" },
-    { icon: <FaPinterest />, link: "#", color: "hover:text-red-700" },
-  ];
+    [email],
+  );
 
   return (
-    <footer style={BannerImg} className="relative overflow-hidden">
-      {/* Decorative Elements */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/70 to-black/60"></div>
-      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500"></div>
+    <footer style={bannerStyle} className="relative overflow-hidden">
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/70 to-black/60" />
+      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500" />
 
-      {/* Back to Top Button */}
+      {/* Back to Top */}
       {showBackToTop && (
         <button
+          type="button"
           onClick={scrollToTop}
-          className="fixed bottom-8 right-8 z-50 w-12 h-12 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center text-white shadow-lg transform transition-all duration-300 hover:scale-110 hover:shadow-2xl animate-bounce"
+          aria-label="Back to top"
+          className="fixed bottom-8 right-8 z-50 w-12 h-12 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center text-white shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-2xl"
         >
           <FaArrowUp />
         </button>
       )}
 
       <div className="container relative z-10">
-        {/* Main Footer Content */}
         <div className="py-12 lg:py-16">
           {/* Top Section */}
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 mb-12">
-            {/* Brand Column */}
+            {/* Brand */}
             <div className="lg:col-span-1">
               <div className="mb-6">
                 <div className="flex items-center gap-3 mb-4">
@@ -157,17 +205,17 @@ const Footer = () => {
                     alt="Shoplio Logo"
                     className="w-12 h-12"
                   />
-                  <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+                  <h2 className="text-2xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
                     Shoplio
-                  </h1>
+                  </h2>
                 </div>
+
                 <p className="text-gray-300 mb-6 leading-relaxed">
                   Shoplio brings you trusted products, affordable prices and
                   smooth shopping—anytime, anywhere with confidence. Experience
                   fashion that fits your lifestyle.
                 </p>
 
-                {/* Trust Badges */}
                 <div className="flex flex-wrap gap-4 mb-6">
                   <div className="flex items-center gap-2 text-sm text-gray-300">
                     <FaShieldAlt className="text-green-400" />
@@ -185,21 +233,22 @@ const Footer = () => {
               </div>
             </div>
 
-            {/* Links Columns */}
-            {FooterLinks.map((section, index) => (
-              <div key={index} className="lg:col-span-1">
+            {/* Links */}
+            {FOOTER_LINKS.map((section) => (
+              <div key={section.title} className="lg:col-span-1">
                 <h3 className="text-lg font-semibold text-white mb-6 pb-2 border-b border-gray-700">
                   {section.title}
                 </h3>
+
                 <ul className="space-y-3">
-                  {section.links.map((link, linkIndex) => (
-                    <li key={linkIndex}>
+                  {section.links.map((item) => (
+                    <li key={item.name}>
                       <a
-                        href={link.link}
+                        href={item.href}
                         className="text-gray-300 hover:text-white transition-all duration-300 flex items-center group"
                       >
-                        <span className="w-2 h-2 bg-transparent group-hover:bg-blue-400 rounded-full mr-3 transition-all duration-300"></span>
-                        {link.name}
+                        <span className="w-2 h-2 bg-transparent group-hover:bg-blue-400 rounded-full mr-3 transition-all duration-300" />
+                        {item.name}
                         <span className="ml-2 opacity-0 group-hover:opacity-100 group-hover:ml-3 transition-all duration-300">
                           →
                         </span>
@@ -211,7 +260,7 @@ const Footer = () => {
             ))}
           </div>
 
-          {/* Newsletter Section */}
+          {/* Newsletter */}
           <div className="mb-12">
             <div className="bg-gradient-to-r from-gray-900/50 to-gray-800/50 backdrop-blur-sm rounded-2xl p-8 border border-gray-700/50">
               <div className="flex flex-col lg:flex-row items-center justify-between gap-6">
@@ -222,6 +271,7 @@ const Footer = () => {
                       Stay Updated
                     </h3>
                   </div>
+
                   <p className="text-gray-300">
                     Subscribe to our newsletter and get 15% off your first
                     order! Be the first to know about new arrivals, exclusive
@@ -240,20 +290,23 @@ const Footer = () => {
                         className="w-full px-6 py-4 bg-gray-900/70 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30 transition-all duration-300"
                         required
                       />
+
                       {isSubscribed && (
                         <div className="absolute -top-12 left-0 bg-green-500 text-white px-4 py-2 rounded-lg animate-fade-in">
                           ✅ Thank you for subscribing!
                         </div>
                       )}
                     </div>
+
                     <button
                       type="submit"
-                      className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-xl font-semibold flex items-center gap-2 transform transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-blue-500/30"
+                      className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-xl font-semibold flex items-center gap-2 transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-blue-500/30"
                     >
                       <span>Subscribe</span>
                       <IoIosSend className="text-lg" />
                     </button>
                   </form>
+
                   <p className="text-xs text-gray-400 mt-3">
                     By subscribing, you agree to our Privacy Policy and consent
                     to receive updates.
@@ -263,13 +316,14 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Contact & Social Section */}
+          {/* Contact + Social + Payment */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
-            {/* Contact Info */}
+            {/* Contact */}
             <div className="lg:col-span-1">
               <h3 className="text-lg font-semibold text-white mb-6">
                 Contact Us
               </h3>
+
               <div className="space-y-4">
                 <div className="flex items-center gap-4 p-3 bg-gray-900/30 rounded-lg hover:bg-gray-800/50 transition-all duration-300">
                   <div className="w-10 h-10 bg-blue-500/20 rounded-full flex items-center justify-center">
@@ -295,38 +349,42 @@ const Footer = () => {
               </div>
             </div>
 
-            {/* Social Media */}
+            {/* Social */}
             <div className="lg:col-span-1">
               <h3 className="text-lg font-semibold text-white mb-6">
                 Follow Us
               </h3>
+
               <p className="text-gray-300 mb-4">
                 Join our community for style inspiration and exclusive deals
               </p>
+
               <div className="flex flex-wrap gap-3">
-                {socialLinks.map((social, index) => (
+                {SOCIAL_LINKS.map(({ name, href, Icon, hoverClass }) => (
                   <a
-                    key={index}
-                    href={social.link}
+                    key={name}
+                    href={href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`w-12 h-12 bg-gray-900/50 rounded-xl flex items-center justify-center text-xl text-gray-300 ${social.color} transform transition-all duration-300 hover:scale-110 hover:bg-gray-800`}
+                    aria-label={name}
+                    className={`w-12 h-12 bg-gray-900/50 rounded-xl flex items-center justify-center text-xl text-gray-300 ${hoverClass} transition-all duration-300 hover:scale-110 hover:bg-gray-800`}
                   >
-                    {social.icon}
+                    <Icon />
                   </a>
                 ))}
               </div>
             </div>
 
-            {/* Payment Methods */}
+            {/* Payment */}
             <div className="lg:col-span-1">
               <h3 className="text-lg font-semibold text-white mb-6">
                 Secure Payment
               </h3>
+
               <div className="flex flex-wrap gap-3 mb-4">
-                {paymentMethods.map((method, index) => (
+                {PAYMENT_METHODS.map((method) => (
                   <div
-                    key={index}
+                    key={method.name}
                     className="px-4 py-2 bg-gray-900/30 rounded-lg flex items-center gap-2"
                   >
                     <span>{method.icon}</span>
@@ -334,6 +392,7 @@ const Footer = () => {
                   </div>
                 ))}
               </div>
+
               <p className="text-xs text-gray-400">
                 256-bit SSL encryption. Your payment information is secure with
                 us.
@@ -342,7 +401,7 @@ const Footer = () => {
           </div>
 
           {/* Divider */}
-          <div className="border-t border-gray-700/50 my-8"></div>
+          <div className="border-t border-gray-700/50 my-8" />
 
           {/* Bottom Bar */}
           <div className="flex flex-col md:flex-row justify-between items-center gap-6">
@@ -385,7 +444,7 @@ const Footer = () => {
             </div>
 
             <div className="flex items-center gap-2">
-              <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+              <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse" />
               <span className="text-sm text-gray-400">
                 <span className="text-white">24/7</span> Customer Support
                 Available
@@ -395,7 +454,7 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* Mobile App Banner (Optional) */}
+      {/* Mobile App Banner */}
       <div className="bg-gradient-to-r from-gray-900 to-black border-t border-gray-800">
         <div className="container py-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
@@ -407,6 +466,7 @@ const Footer = () => {
                 Enjoy exclusive app-only deals
               </p>
             </div>
+
             <div className="flex gap-3">
               <button className="px-6 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-lg transition-colors">
                 App Store
@@ -420,6 +480,4 @@ const Footer = () => {
       </div>
     </footer>
   );
-};
-
-export default Footer;
+}

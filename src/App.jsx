@@ -1,61 +1,95 @@
-import React, { useState } from "react";
-import Navbar from "./components/Navbar/Navbar";
-import Hero from "./components/Hero/Hero";
-import Products from "./components/Products/Products";
+import {
+  useEffect,
+  useMemo,
+  useState,
+  Suspense,
+  lazy,
+  useCallback,
+} from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import TopProducts from "./components/TopProducts/TopProducts";
-import Banner from "./components/Banner/Banner";
-import Subscribe from "./components/Subscribe/Subscribe";
-import Testimonials from "./components/Testimonials/Testimonials";
-import Footer from "./components/Footer/Footer";
-import Popup from "./components/Popup/Popup";
 
-const App = () => {
-  const [orderPopup, setOrderPopup] = React.useState(false);
+import { ThemeProvider } from "./context/ThemeContext";
+import { CartProvider } from "./context/CartContext";
+import ErrorBoundary from "./components/Common/ErrorBoundary";
 
-  const handleOrderPopup = () => {
-    setOrderPopup(!orderPopup);
-  };
-  React.useEffect(() => {
+const Navbar = lazy(() => import("./components/Navbar/Navbar"));
+const Hero = lazy(() => import("./components/Hero/Hero"));
+const Products = lazy(() => import("./components/Products/Products"));
+const TopProducts = lazy(() => import("./components/TopProducts/TopProducts"));
+const Banner = lazy(() => import("./components/Banner/Banner"));
+const Subscribe = lazy(() => import("./components/Subscribe/Subscribe"));
+const Testimonials = lazy(
+  () => import("./components/Testimonials/Testimonials"),
+);
+const Footer = lazy(() => import("./components/Footer/Footer"));
+const Popup = lazy(() => import("./components/Popup/Popup"));
+
+function LoadingSpinner() {
+  return (
+    <div className="min-h-screen flex items-center justify-center">
+      <div className="text-center">
+        <div className="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+        <p className="text-gray-600 dark:text-gray-400 animate-pulse">
+          Loading...
+        </p>
+      </div>
+    </div>
+  );
+}
+
+export default function App() {
+  const [orderPopup, setOrderPopup] = useState(false);
+  const [selectedProductId, setSelectedProductId] = useState(null);
+
+  useEffect(() => {
     AOS.init({
       offset: 100,
       duration: 800,
       easing: "ease-in-sine",
       delay: 100,
+      once: true,
     });
-    AOS.refresh();
   }, []);
 
-  // In parent component
-  const [selectedProduct, setSelectedProduct] = useState(null);
+  const openOrderPopup = useCallback((productId = null) => {
+    setSelectedProductId(productId);
+    setOrderPopup(true);
+  }, []);
 
-  // To open popup with specific product
-  const handleOrderClick = (productId) => {
-    setSelectedProduct(productId);
-    setShowOrderPopup(true);
-  };
+  const closeOrderPopup = useCallback(() => {
+    setOrderPopup(false);
+    setSelectedProductId(null);
+  }, []);
 
-  const [showOrderPopup, setShowOrderPopup] = useState(false);
+  const appClassName = useMemo(() => {
+    return "min-h-screen bg-white dark:bg-gray-900 dark:text-white transition-colors duration-300";
+  }, []);
 
   return (
-    <div className="bg-white dark:bg-gray-900 dark:text-white duration-200">
-      <Navbar handleOrderPopup={handleOrderPopup} />
-      <Hero handleOrderPopup={handleOrderPopup} />
-      <Products handleOrderPopup={() => setShowOrderPopup(true)} />
-      <TopProducts handleOrderPopup={() => setShowOrderPopup(true)} />
-      <Banner />
-      <Subscribe />
-      <Testimonials />
-      <Footer />
-      {/* <Popup orderPopup={orderPopup} setOrderPopup={setOrderPopup} /> */}
-      <Popup
-        orderPopup={showOrderPopup}
-        setOrderPopup={setShowOrderPopup}
-        selectedProductId={selectedProduct}
-      />
-    </div>
-  );
-};
+    <ThemeProvider>
+      <CartProvider>
+        <ErrorBoundary>
+          <div className={appClassName}>
+            <Suspense fallback={<LoadingSpinner />}>
+              <Navbar onOrderClick={openOrderPopup} />
+              <Hero onOrderClick={openOrderPopup} />
+              <Products onOrderClick={openOrderPopup} />
+              <TopProducts onOrderClick={openOrderPopup} />
+              <Banner />
+              <Subscribe />
+              <Testimonials />
+              <Footer />
 
-export default App;
+              <Popup
+                isOpen={orderPopup}
+                onClose={closeOrderPopup}
+                selectedProductId={selectedProductId}
+              />
+            </Suspense>
+          </div>
+        </ErrorBoundary>
+      </CartProvider>
+    </ThemeProvider>
+  );
+}
