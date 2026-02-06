@@ -1,39 +1,74 @@
-/* Remove default slick slider styles that might cause overflow */
+/* ====== Base Slick Fixes ====== */
 .slick-slider {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 .slick-slide {
-    outline: none !important;
+  outline: none !important;
 }
 
 .slick-list {
-    margin: 0 -10px;
+  margin: 0;
+  overflow: hidden;
 }
 
-.slick-slide>div {
-    padding: 0 10px;
+.slick-slide > div {
+  padding: 0;
 }
 
-/* Fix for focus outlines */
-button:focus {
-    outline: 2px solid #3b82f6;
-    outline-offset: 2px;
+/* ====== Slick Dots Clean ====== */
+.slick-dots {
+  bottom: 16px !important;
 }
 
-/* Custom animations */
-@keyframes bounce {
+.slick-dots li button:before {
+  font-size: 10px;
+  opacity: 0.35;
+}
 
-    0%,
-    100% {
-        transform: translateY(0);
-    }
+.slick-dots li.slick-active button:before {
+  opacity: 1;
+}
 
-    50% {
-        transform: translateY(-5px);
-    }
+/* ====== Arrow PERFECT Center Fix ====== */
+.slick-prev,
+.slick-next {
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  z-index: 999 !important;
+}
+
+.slick-prev {
+  left: 16px !important;
+}
+
+.slick-next {
+  right: 16px !important;
+}
+
+.slick-prev,
+.slick-next {
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+}
+
+/* ====== Accessibility ====== */
+button:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* ====== Optional: Small Animation Utility ====== */
+@keyframes bounceY {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
 }
 
 .animate-bounce {
-    animation: bounce 2s ease-in-out infinite;
+  animation: bounceY 2s ease-in-out infinite;
 }
