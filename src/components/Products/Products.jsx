@@ -143,7 +143,16 @@ function ProductCard({ product, isWishlisted, onWishlistToggle, onAddToCart }) {
 
       {/* Image Placeholder */}
       <div className="h-48 overflow-hidden rounded-lg mb-4 bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
-        <span className="text-gray-400 text-sm">No Image</span>
+        {product.img ? (
+          <img
+            src={product.img}
+            alt={product.name}
+            className="w-full h-full object-contain p-4"
+            loading="lazy"
+          />
+        ) : (
+          <span className="text-gray-400 text-sm">No Image</span>
+        )}
       </div>
 
       {/* Info */}
@@ -197,6 +206,7 @@ ProductCard.propTypes = {
     color: PropTypes.string,
     size: PropTypes.string,
     category: PropTypes.string,
+    img: PropTypes.string,
     rating: PropTypes.number,
     reviews: PropTypes.number,
     discount: PropTypes.number,

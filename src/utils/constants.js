@@ -1,5 +1,10 @@
 import { FaFacebook, FaInstagram } from "react-icons/fa";
 
+import jacketImg from "../assets/products/jacket.avif";
+import sweaterImg from "../assets/products/sweater.webp";
+import watchImg from "../assets/products/watch.webp";
+import shoesImg from "../assets/products/shoes.png";
+
 export const PRODUCTS = [
   {
     id: 1,
@@ -8,6 +13,7 @@ export const PRODUCTS = [
     color: "Black",
     size: "M",
     category: "Men's Wear",
+    img: jacketImg,
   },
   {
     id: 2,
@@ -16,6 +22,7 @@ export const PRODUCTS = [
     color: "Navy",
     size: "L",
     category: "Women's Wear",
+    img: sweaterImg,
   },
   {
     id: 3,
@@ -24,6 +31,7 @@ export const PRODUCTS = [
     color: "Space Gray",
     size: "One Size",
     category: "Electronics",
+    img: watchImg,
   },
   {
     id: 4,
@@ -32,6 +40,7 @@ export const PRODUCTS = [
     color: "White/Blue",
     size: "42",
     category: "Footwear",
+    img: shoesImg,
   },
 ];
 
