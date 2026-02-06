@@ -454,7 +454,7 @@ export default function Popup({ isOpen, onClose, selectedProductId }) {
                             ? "border-red-500"
                             : "border-gray-300 dark:border-gray-600"
                         } dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500`}
-                        placeholder="John Doe"
+                        placeholder="Mahamudul Hasan Milon"
                       />
                       {errors.name && (
                         <p className="mt-1 text-sm text-red-500 flex items-center gap-1">
@@ -479,7 +479,7 @@ export default function Popup({ isOpen, onClose, selectedProductId }) {
                             ? "border-red-500"
                             : "border-gray-300 dark:border-gray-600"
                         } dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500`}
-                        placeholder="+1 (555) 123-4567"
+                        placeholder="+8801773593797"
                       />
                       {errors.phone && (
                         <p className="mt-1 text-sm text-red-500 flex items-center gap-1">
@@ -505,7 +505,7 @@ export default function Popup({ isOpen, onClose, selectedProductId }) {
                           ? "border-red-500"
                           : "border-gray-300 dark:border-gray-600"
                       } dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500`}
-                      placeholder="john@example.com"
+                      placeholder="mahamudulhasanmilon553@gmail.com"
                     />
                     {errors.email && (
                       <p className="mt-1 text-sm text-red-500 flex items-center gap-1">
@@ -530,7 +530,7 @@ export default function Popup({ isOpen, onClose, selectedProductId }) {
                           ? "border-red-500"
                           : "border-gray-300 dark:border-gray-600"
                       } dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500`}
-                      placeholder="123 Main St, Apt 4B, New York, NY 10001"
+                      placeholder="Borobag, Mirpur-2, Dhaka, Bangladesh"
                     />
                     {errors.address && (
                       <p className="mt-1 text-sm text-red-500 flex items-center gap-1">

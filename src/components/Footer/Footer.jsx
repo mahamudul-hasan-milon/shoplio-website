@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+
 import footerLogo from "../../assets/logo.png";
-import Banner from "../../assets/website/footer-pattern.jpg";
+import FooterPattern from "../../assets/website/footer-pattern.jpg";
 
 import {
   FaFacebook,
@@ -11,9 +12,7 @@ import {
   FaTwitter,
   FaYoutube,
   FaTiktok,
-  FaPinterest,
   FaRegEnvelope,
-  FaArrowUp,
   FaHeart,
   FaShieldAlt,
   FaTruck,
@@ -23,7 +22,7 @@ import {
 import { IoIosSend } from "react-icons/io";
 
 const bannerStyle = {
-  backgroundImage: `url(${Banner})`,
+  backgroundImage: `url(${FooterPattern})`,
   backgroundPosition: "bottom",
   backgroundRepeat: "no-repeat",
   backgroundSize: "cover",
@@ -61,15 +60,6 @@ const FOOTER_LINKS = [
       { name: "Size Guide", href: "/size-guide" },
     ],
   },
-  {
-    title: "Legal",
-    links: [
-      { name: "Privacy Policy", href: "/privacy" },
-      { name: "Terms of Service", href: "/terms" },
-      { name: "Cookie Policy", href: "/cookies" },
-      { name: "Accessibility", href: "/accessibility" },
-    ],
-  },
 ];
 
 const SOCIAL_LINKS = [
@@ -77,43 +67,37 @@ const SOCIAL_LINKS = [
     name: "Facebook",
     href: "https://www.facebook.com/m.h.milon.212672",
     Icon: FaFacebook,
-    hoverClass: "hover:text-blue-600",
+    hoverClass: "hover:text-blue-500",
   },
   {
     name: "Instagram",
     href: "https://www.instagram.com/mahamudulhasan_milon/",
     Icon: FaInstagram,
-    hoverClass: "hover:text-pink-600",
+    hoverClass: "hover:text-pink-500",
   },
   {
     name: "LinkedIn",
     href: "https://www.linkedin.com/in/md-mahamudul-hasan-milon-91aa81230/",
     Icon: FaLinkedin,
-    hoverClass: "hover:text-blue-700",
+    hoverClass: "hover:text-blue-400",
   },
   {
     name: "Twitter",
     href: "#",
     Icon: FaTwitter,
-    hoverClass: "hover:text-blue-400",
+    hoverClass: "hover:text-sky-400",
   },
   {
     name: "YouTube",
     href: "#",
     Icon: FaYoutube,
-    hoverClass: "hover:text-red-600",
+    hoverClass: "hover:text-red-500",
   },
   {
     name: "TikTok",
     href: "#",
     Icon: FaTiktok,
     hoverClass: "hover:text-white",
-  },
-  {
-    name: "Pinterest",
-    href: "#",
-    Icon: FaPinterest,
-    hoverClass: "hover:text-red-700",
   },
 ];
 
@@ -128,29 +112,13 @@ const PAYMENT_METHODS = [
 export default function Footer() {
   const [email, setEmail] = useState("");
   const [isSubscribed, setIsSubscribed] = useState(false);
-  const [showBackToTop, setShowBackToTop] = useState(false);
 
   const timeoutRef = useRef(null);
 
-  // Back to top visibility (performance safe)
-  useEffect(() => {
-    const onScroll = () => setShowBackToTop(window.scrollY > 500);
-
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  // Cleanup subscription timeout (important!)
   useEffect(() => {
     return () => {
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
     };
-  }, []);
-
-  const scrollToTop = useCallback(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
   const handleSubscribe = useCallback(
@@ -159,8 +127,6 @@ export default function Footer() {
 
       const value = email.trim();
       if (!value) return;
-
-      console.log("Subscribed:", value);
 
       setIsSubscribed(true);
       setEmail("");
@@ -180,62 +146,50 @@ export default function Footer() {
       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/70 to-black/60" />
       <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500" />
 
-      {/* Back to Top */}
-      {showBackToTop && (
-        <button
-          type="button"
-          onClick={scrollToTop}
-          aria-label="Back to top"
-          className="fixed bottom-8 right-8 z-50 w-12 h-12 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center text-white shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-2xl"
-        >
-          <FaArrowUp />
-        </button>
-      )}
-
-      <div className="container relative z-10">
+      <div className="container relative z-10 mx-auto px-4">
         <div className="py-12 lg:py-16">
-          {/* Top Section */}
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 mb-12">
+          {/* Top */}
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-10 mb-12">
             {/* Brand */}
             <div className="lg:col-span-1">
-              <div className="mb-6">
-                <div className="flex items-center gap-3 mb-4">
-                  <img
-                    src={footerLogo}
-                    alt="Shoplio Logo"
-                    className="w-12 h-12"
-                  />
-                  <h2 className="text-2xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-                    Shoplio
-                  </h2>
+              <div className="flex items-center gap-3 mb-4">
+                <img
+                  src={footerLogo}
+                  alt="Shoplio Logo"
+                  className="w-12 h-12"
+                />
+                <h2 className="text-2xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+                  Shoplio
+                </h2>
+              </div>
+
+              <p className="text-gray-300 mb-6 leading-relaxed">
+                Shoplio brings you trusted products, affordable prices and
+                smooth shopping—anytime, anywhere with confidence. Experience
+                fashion that fits your lifestyle.
+              </p>
+
+              <div className="flex flex-wrap gap-4">
+                <div className="flex items-center gap-2 text-sm text-gray-300">
+                  <FaShieldAlt className="text-green-400" />
+                  <span>Secure Shopping</span>
                 </div>
 
-                <p className="text-gray-300 mb-6 leading-relaxed">
-                  Shoplio brings you trusted products, affordable prices and
-                  smooth shopping—anytime, anywhere with confidence. Experience
-                  fashion that fits your lifestyle.
-                </p>
+                <div className="flex items-center gap-2 text-sm text-gray-300">
+                  <FaTruck className="text-blue-400" />
+                  <span>Free Shipping</span>
+                </div>
 
-                <div className="flex flex-wrap gap-4 mb-6">
-                  <div className="flex items-center gap-2 text-sm text-gray-300">
-                    <FaShieldAlt className="text-green-400" />
-                    <span>Secure Shopping</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-sm text-gray-300">
-                    <FaTruck className="text-blue-400" />
-                    <span>Free Shipping</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-sm text-gray-300">
-                    <FaCreditCard className="text-purple-400" />
-                    <span>Easy Returns</span>
-                  </div>
+                <div className="flex items-center gap-2 text-sm text-gray-300">
+                  <FaCreditCard className="text-purple-400" />
+                  <span>Easy Returns</span>
                 </div>
               </div>
             </div>
 
             {/* Links */}
             {FOOTER_LINKS.map((section) => (
-              <div key={section.title} className="lg:col-span-1">
+              <div key={section.title}>
                 <h3 className="text-lg font-semibold text-white mb-6 pb-2 border-b border-gray-700">
                   {section.title}
                 </h3>
@@ -245,11 +199,11 @@ export default function Footer() {
                     <li key={item.name}>
                       <a
                         href={item.href}
-                        className="text-gray-300 hover:text-white transition-all duration-300 flex items-center group"
+                        className="text-gray-300 hover:text-white transition-all duration-200 flex items-center group"
                       >
-                        <span className="w-2 h-2 bg-transparent group-hover:bg-blue-400 rounded-full mr-3 transition-all duration-300" />
+                        <span className="w-2 h-2 bg-transparent group-hover:bg-blue-400 rounded-full mr-3 transition-all duration-200" />
                         {item.name}
-                        <span className="ml-2 opacity-0 group-hover:opacity-100 group-hover:ml-3 transition-all duration-300">
+                        <span className="ml-2 opacity-0 group-hover:opacity-100 group-hover:ml-3 transition-all duration-200">
                           →
                         </span>
                       </a>
@@ -262,8 +216,8 @@ export default function Footer() {
 
           {/* Newsletter */}
           <div className="mb-12">
-            <div className="bg-gradient-to-r from-gray-900/50 to-gray-800/50 backdrop-blur-sm rounded-2xl p-8 border border-gray-700/50">
-              <div className="flex flex-col lg:flex-row items-center justify-between gap-6">
+            <div className="bg-white/5 backdrop-blur-md rounded-2xl p-8 border border-white/10">
+              <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
                 <div className="lg:w-1/2">
                   <div className="flex items-center gap-3 mb-3">
                     <FaRegEnvelope className="text-2xl text-blue-400" />
@@ -280,19 +234,22 @@ export default function Footer() {
                 </div>
 
                 <div className="lg:w-1/2 w-full">
-                  <form onSubmit={handleSubscribe} className="flex gap-2">
+                  <form
+                    onSubmit={handleSubscribe}
+                    className="flex flex-col sm:flex-row gap-3"
+                  >
                     <div className="flex-1 relative">
                       <input
                         type="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="Enter your email"
-                        className="w-full px-6 py-4 bg-gray-900/70 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30 transition-all duration-300"
+                        className="w-full px-6 py-4 bg-black/30 border border-white/15 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30 transition-all duration-200"
                         required
                       />
 
                       {isSubscribed && (
-                        <div className="absolute -top-12 left-0 bg-green-500 text-white px-4 py-2 rounded-lg animate-fade-in">
+                        <div className="absolute -top-12 left-0 bg-green-500 text-white px-4 py-2 rounded-lg text-sm">
                           ✅ Thank you for subscribing!
                         </div>
                       )}
@@ -300,7 +257,7 @@ export default function Footer() {
 
                     <button
                       type="submit"
-                      className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-xl font-semibold flex items-center gap-2 transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-blue-500/30"
+                      className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-xl font-semibold flex items-center justify-center gap-2 transition-all duration-200 hover:scale-[1.02] hover:shadow-xl hover:shadow-blue-500/20"
                     >
                       <span>Subscribe</span>
                       <IoIosSend className="text-lg" />
@@ -317,16 +274,16 @@ export default function Footer() {
           </div>
 
           {/* Contact + Social + Payment */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 mb-12">
             {/* Contact */}
-            <div className="lg:col-span-1">
+            <div>
               <h3 className="text-lg font-semibold text-white mb-6">
                 Contact Us
               </h3>
 
               <div className="space-y-4">
-                <div className="flex items-center gap-4 p-3 bg-gray-900/30 rounded-lg hover:bg-gray-800/50 transition-all duration-300">
-                  <div className="w-10 h-10 bg-blue-500/20 rounded-full flex items-center justify-center">
+                <div className="flex items-center gap-4 p-4 bg-white/5 rounded-xl border border-white/10 hover:bg-white/10 transition-colors">
+                  <div className="w-11 h-11 bg-blue-500/20 rounded-full flex items-center justify-center">
                     <FaMobileAlt className="text-blue-400" />
                   </div>
                   <div>
@@ -335,8 +292,8 @@ export default function Footer() {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-4 p-3 bg-gray-900/30 rounded-lg hover:bg-gray-800/50 transition-all duration-300">
-                  <div className="w-10 h-10 bg-purple-500/20 rounded-full flex items-center justify-center">
+                <div className="flex items-center gap-4 p-4 bg-white/5 rounded-xl border border-white/10 hover:bg-white/10 transition-colors">
+                  <div className="w-11 h-11 bg-purple-500/20 rounded-full flex items-center justify-center">
                     <FaLocationArrow className="text-purple-400" />
                   </div>
                   <div>
@@ -350,7 +307,7 @@ export default function Footer() {
             </div>
 
             {/* Social */}
-            <div className="lg:col-span-1">
+            <div>
               <h3 className="text-lg font-semibold text-white mb-6">
                 Follow Us
               </h3>
@@ -367,7 +324,7 @@ export default function Footer() {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={name}
-                    className={`w-12 h-12 bg-gray-900/50 rounded-xl flex items-center justify-center text-xl text-gray-300 ${hoverClass} transition-all duration-300 hover:scale-110 hover:bg-gray-800`}
+                    className={`w-12 h-12 bg-white/5 border border-white/10 rounded-xl flex items-center justify-center text-xl text-gray-300 ${hoverClass} transition-all duration-200 hover:scale-110 hover:bg-white/10`}
                   >
                     <Icon />
                   </a>
@@ -376,7 +333,7 @@ export default function Footer() {
             </div>
 
             {/* Payment */}
-            <div className="lg:col-span-1">
+            <div>
               <h3 className="text-lg font-semibold text-white mb-6">
                 Secure Payment
               </h3>
@@ -385,7 +342,7 @@ export default function Footer() {
                 {PAYMENT_METHODS.map((method) => (
                   <div
                     key={method.name}
-                    className="px-4 py-2 bg-gray-900/30 rounded-lg flex items-center gap-2"
+                    className="px-4 py-2 bg-white/5 border border-white/10 rounded-lg flex items-center gap-2"
                   >
                     <span>{method.icon}</span>
                     <span className="text-sm text-gray-300">{method.name}</span>
@@ -401,9 +358,9 @@ export default function Footer() {
           </div>
 
           {/* Divider */}
-          <div className="border-t border-gray-700/50 my-8" />
+          <div className="border-t border-white/10 my-8" />
 
-          {/* Bottom Bar */}
+          {/* Bottom */}
           <div className="flex flex-col md:flex-row justify-between items-center gap-6">
             <div className="text-center md:text-left">
               <p className="text-gray-400 text-sm">
@@ -454,25 +411,34 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Mobile App Banner */}
-      <div className="bg-gradient-to-r from-gray-900 to-black border-t border-gray-800">
-        <div className="container py-6">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <div>
-              <h4 className="text-white font-semibold mb-1">
+      {/* ✅ FIXED Mobile App Banner */}
+      <div className="relative z-10 border-t border-white/10 bg-gradient-to-r from-black via-gray-950 to-black">
+        <div className="container mx-auto px-4 py-8">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="text-center md:text-left">
+              <h4 className="text-white text-lg font-semibold mb-1">
                 Get the Shoplio App
               </h4>
               <p className="text-gray-400 text-sm">
-                Enjoy exclusive app-only deals
+                Enjoy exclusive app-only deals and faster checkout.
               </p>
             </div>
 
-            <div className="flex gap-3">
-              <button className="px-6 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-lg transition-colors">
-                App Store
+            <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+              <button
+                type="button"
+                className="w-full sm:w-auto px-6 py-3 rounded-xl bg-white/5 border border-white/10 text-white
+                  hover:bg-white/10 transition-colors"
+              >
+                🍎 App Store
               </button>
-              <button className="px-6 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-lg transition-colors">
-                Google Play
+
+              <button
+                type="button"
+                className="w-full sm:w-auto px-6 py-3 rounded-xl bg-white/5 border border-white/10 text-white
+                  hover:bg-white/10 transition-colors"
+              >
+                ▶ Google Play
               </button>
             </div>
           </div>
